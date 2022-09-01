@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
+import 'package:mpespkit/utilities/try_again.dart';
 
 Future<void> deleteFiles({required String device, required String port}) async {
   final files = await getAllFiles(device: device, port: port);
@@ -23,9 +24,8 @@ Future<void> deleteFiles({required String device, required String port}) async {
     print(orange("\nCould not file ${file} in file list \n"));
     sleep(1);
 
-    final retry = confirm("Try again?");
-    if (retry) return deleteFiles(device: device, port: port);
-    return;
+    return tryAgain(
+        callback: () => deleteFiles(device: device, port: port), exit: () {});
   }
 
   final timeout = ask("Enter timeout in seconds:",
@@ -58,8 +58,9 @@ Future<void> deleteFile(
 
   if (exitCode != 0) {
     print(orange("Failed to delete ${path}"));
-    final retry = confirm("Try again?");
-    if (retry) return deleteFile(timeout: timeout, path: path, port: port);
+
+    return tryAgain(
+        callback: () => deleteFile(timeout: timeout, path: path, port: port));
   } else {
     print(blue("Deleted ${path} successfuly"));
     sleep(1);
@@ -91,7 +92,8 @@ Future<dynamic> getAllFiles(
       onFailure: (ProcessResult res) {
         print(orange("Failed to retrieve files from device"));
         print(orange(res.stderr));
-        final retry = confirm("Try again?");
-        if (retry) return deleteFiles(device: device, port: port);
+
+        return tryAgain(
+            callback: () => deleteFiles(device: device, port: port));
       });
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
+import 'package:mpespkit/utilities/try_again.dart';
 
 Future<void> eraseFlash({required String device, required String port}) async {
   bool cont = confirm("Continue to reset your device's firmware?");
@@ -31,8 +32,7 @@ Future<void> eraseFlash({required String device, required String port}) async {
         print(orange("Failed to reset the firmware on your device"));
         print(orange(res.stderr != "" ? res.stderr : res.stdout));
         sleep(1);
-        bool retry = confirm("Try again?");
-        sleep(1);
-        if (retry) return eraseFlash(device: device, port: port);
+
+        return tryAgain(callback: () => eraseFlash(device: device, port: port));
       });
 }

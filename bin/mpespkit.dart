@@ -9,6 +9,18 @@ import 'package:mpespkit/selectors/device_select.dart';
 import 'package:mpespkit/utilities/cli_utils.dart';
 import 'package:mpespkit/utilities/tools_menu.dart';
 
+/**
+ * TODO:
+ * - Add try-catch block on soft reset
+ * - Organize code and try to separate rendering and logic as much as possible
+ * - finish Serial Shell Tool
+ * - add baud selector on file transfer
+ * - add general baud selector
+ * - support "path" on file transfer
+ * - Improve UX on all tools
+ * - Write a readme
+ */
+
 void main(List<String> arguments) async {
   printLogo(false);
   print(blue("Author: ") + white("https://github.com/tk-ni"));

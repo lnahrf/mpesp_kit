@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/utilities/run_command.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
+import 'package:mpespkit/utilities/try_again.dart';
 
-Future<dynamic> esptoolInit() async {
+Future<void> esptoolInit() async {
   final installed = await runCommand(
       command: "python",
       args: ["-m", "esptool", "-h"],
@@ -26,9 +27,8 @@ Future<dynamic> esptoolInit() async {
           print(orange("Failed to install esptool"));
           print(orange(res.stderr != "" ? res.stderr : res.stdout));
           sleep(1);
-          bool retry = confirm("Try again?");
-          if (retry) return esptoolInit();
-          exit(0);
+
+          return tryAgain(callback: esptoolInit, exit: () => exit(0));
         });
   }
 }

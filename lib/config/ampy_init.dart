@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/utilities/run_command.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
+import 'package:mpespkit/utilities/try_again.dart';
 
 Future<dynamic> ampyInit() async {
   final installed = await runCommand(
@@ -25,9 +26,8 @@ Future<dynamic> ampyInit() async {
           print(orange("Failed to install adafruit-ampy"));
           print(orange(res.stderr != "" ? res.stderr : res.stdout));
           sleep(1);
-          bool retry = confirm("Try again?");
-          if (retry) return ampyInit();
-          exit(0);
+
+          return tryAgain(callback: ampyInit, exit: () => exit(0));
         });
   }
 }
