@@ -3,14 +3,45 @@ import 'package:dcli/dcli.dart';
 
 Future<List<File>> selectTransferFiles() async {
   List<File> files = [];
-  final firstFile = await addFile();
+  final firstFile = await _addFile();
 
   if (firstFile != null) files.add(firstFile);
 
+  await _addAnotherFileLoop(files: files);
+
+  print(blue("\nSelected files:"));
+  for (int i = 0; i < files.length; i++)
+    print(blue(i == files.length - 1 ? files[i].path + "\n" : files[i].path));
+
+  return files;
+}
+
+Future<dynamic> _addFile() async {
+  String path = ask(
+      "Enter the file path you would like to transfer to MicroPython's file system");
+
+  if (path.startsWith("\"") && path.endsWith("\""))
+    path = path.substring(1, path.length - 1);
+
+  File file = File(path);
+
+  try {
+    bool exists = await file.exists();
+    if (!exists) throw Exception("Could not find ${path}");
+  } catch (exception) {
+    print(orange(exception.toString()));
+    return null;
+  }
+
+  print(blue(file.path + "\n"));
+  return file;
+}
+
+Future<void> _addAnotherFileLoop({required List<File> files}) async {
   bool shouldAddAnotherFile = confirm("Add another file?");
 
   while (shouldAddAnotherFile) {
-    final loopFile = await addFile();
+    final loopFile = await _addFile();
 
     bool isNull = loopFile == null;
 
@@ -28,25 +59,4 @@ Future<List<File>> selectTransferFiles() async {
 
     shouldAddAnotherFile = confirm("Add another file?");
   }
-
-  print(blue("\nSelected files:"));
-  for (int i = 0; i < files.length; i++)
-    print(blue(i == files.length - 1 ? files[i].path + "\n" : files[i].path));
-
-  return files;
-}
-
-Future<dynamic> addFile() async {
-  final path = ask(
-      "Enter the filepath you would like to transfer to MicroPython's file system:");
-  File file = File(path);
-  try {
-    bool exists = await file.exists();
-    if (!exists) throw Exception("Could not find ${path}");
-  } catch (exception) {
-    print(orange(exception.toString()));
-    return null;
-  }
-  print(blue(file.path + "\n"));
-  return file;
 }

@@ -14,8 +14,6 @@ import 'package:mpespkit/utilities/tools_menu.dart';
  * - Organize code and try to separate rendering and logic as much as possible
  * - remove all final types
  * - finish Serial Shell Tool
- * - add baud selector on file transfer
- * - support "path" on file transfer
  * - Improve UX on all tools
  * - Write a readme
  */
@@ -31,8 +29,8 @@ void main(List<String> arguments) async {
   await esptoolInit();
   await ampyInit();
 
-  final selectedDevice = await deviceSelect();
-  final selectedPort = await portSelect();
+  String selectedDevice = await deviceSelect();
+  String selectedPort = await portSelect();
 
   clear();
   await toolsMenu(device: selectedDevice, port: selectedPort);

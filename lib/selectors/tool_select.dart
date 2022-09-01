@@ -14,7 +14,7 @@ Future<String> toolSelect() async {
       ],
       format: (tool) => "${(tool as Tool).name} - ${tool.description}");
 
-  print(blue(tool.name + "\n"));
+  print(blue("\n" + tool.name + "\n"));
   sleep(1);
 
   return tool.name.split(' - ')[0];

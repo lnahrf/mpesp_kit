@@ -8,7 +8,7 @@ import 'package:mpespkit/utilities/parse_result.dart';
 import 'package:mpespkit/utilities/try_again.dart';
 
 Future<void> deleteFiles({required String device, required String port}) async {
-  final files = await getAllFiles(device: device, port: port);
+  final files = await _getAllFiles(device: device, port: port);
   if (files.length == 0) {
     print(orange("No files found"));
     return sleep(2);
@@ -18,8 +18,8 @@ Future<void> deleteFiles({required String device, required String port}) async {
   print(blue(files.join("\n") + "\n"));
   sleep(1);
 
-  final file = ask(
-      "Enter the path of the file you want to delete (enter * to delete all files):");
+  String file = ask(
+      "Enter the file path you want to delete (enter * to delete all files)");
 
   bool fileNotFound = file != "*" && !files.any((item) => item == file);
   if (fileNotFound) {
@@ -30,23 +30,23 @@ Future<void> deleteFiles({required String device, required String port}) async {
         callback: () => deleteFiles(device: device, port: port), exit: () {});
   }
 
-  final timeout = timeoutSelect();
+  String timeout = timeoutSelect();
 
   sleep(1);
 
   if (file == "*")
-    return deleteAllFiles(timeout: timeout, paths: files, port: port);
+    return _deleteAllFiles(timeout: timeout, paths: files, port: port);
 
-  return deleteFile(timeout: timeout, path: file, port: port);
+  return _deleteFile(timeout: timeout, path: file, port: port);
 }
 
-Future<void> deleteFile(
+Future<void> _deleteFile(
     {required String timeout,
     required String path,
     required String port}) async {
   print(blue("Deleting ${path} (this may take a while)"));
 
-  final process =
+  Process process =
       await Process.start("ampy", ["-p", port, "rm", path], runInShell: true);
 
   Timer timer = killPidTimer(
@@ -54,33 +54,33 @@ Future<void> deleteFile(
       duration: int.parse(timeout),
       message: "Timeout reached, killing file deletion process");
 
-  final exitCode = await process.exitCode;
+  int exitCode = await process.exitCode;
   timer.cancel();
 
   if (exitCode != 0) {
     print(orange("Failed to delete ${path}"));
 
     return tryAgain(
-        callback: () => deleteFile(timeout: timeout, path: path, port: port));
+        callback: () => _deleteFile(timeout: timeout, path: path, port: port));
   } else {
     print(blue("Deleted ${path} successfuly"));
     sleep(1);
   }
 }
 
-Future<void> deleteAllFiles(
+Future<void> _deleteAllFiles(
     {required String timeout,
     required List<String> paths,
     required String port}) async {
-  for (final path in paths)
-    await deleteFile(timeout: timeout, path: path, port: port);
+  for (String path in paths)
+    await _deleteFile(timeout: timeout, path: path, port: port);
 }
 
-Future<dynamic> getAllFiles(
+Future<dynamic> _getAllFiles(
     {required String device, required String port}) async {
   print(blue("Retreiving file list (this may take a while) \n"));
 
-  final result =
+  ProcessResult result =
       await Process.run("ampy", ["-p", port, "ls"], runInShell: true);
 
   return parseResult(
