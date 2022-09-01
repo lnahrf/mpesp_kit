@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:dcli/dcli.dart';
+import 'package:mpespkit/ampy/get_files.dart';
 import 'package:mpespkit/selectors/timeout_select.dart';
 import 'package:mpespkit/utilities/cli_utils.dart';
 import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> deleteFiles({required String device, required String port}) async {
-  final files = await _getAllFiles(device: device, port: port);
+  final files = await getFiles(device: device, port: port);
   if (files.length == 0) {
     print(orange("No files found"));
     return sleep(2);
@@ -45,8 +45,8 @@ Future<void> _deleteFile(
     required String port}) async {
   print(blue("Deleting ${path} (this may take a while)"));
 
-  Process process =
-      await Process.start("ampy", ["-p", port, "rm", path], runInShell: true);
+  Process process = await Process.start("ampy", ["-p", port, "rm", path],
+      runInShell: true, mode: ProcessStartMode.inheritStdio);
 
   Timer timer = killPidTimer(
       pid: process.pid,
@@ -73,27 +73,4 @@ Future<void> _deleteAllFiles(
     required String port}) async {
   for (String path in paths)
     await _deleteFile(timeout: timeout, path: path, port: port);
-}
-
-Future<dynamic> _getAllFiles(
-    {required String device, required String port}) async {
-  print(blue("Retreiving file list (this may take a while) \n"));
-
-  ProcessResult result =
-      await Process.run("ampy", ["-p", port, "ls"], runInShell: true);
-
-  return parseResult(
-      result: result,
-      onSuccess: (ProcessResult res) {
-        LineSplitter ls = LineSplitter();
-        List<String> lines = ls.convert(res.stdout);
-        return lines;
-      },
-      onFailure: (ProcessResult res) {
-        print(orange("Failed to retrieve files from device"));
-        print(orange(res.stderr));
-
-        return tryAgain(
-            callback: () => deleteFiles(device: device, port: port));
-      });
 }

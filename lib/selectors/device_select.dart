@@ -2,9 +2,22 @@ import 'package:dcli/dcli.dart';
 import 'package:mpespkit/enums/devices.dart';
 
 Future<String> deviceSelect() async {
-  print("Select a Device");
-  String device = menu(prompt: "#", options: [Devices.ESP32, Devices.ESP8266]);
+  List<Device> devices = [Devices.ESP32];
 
-  print(blue(device + "\n"));
-  return device;
+  if (devices.length == 1) {
+    return devices[0].name;
+  }
+
+  print("Select a Device");
+
+  Device device = menu(
+      prompt: "#",
+      options: devices,
+      format: (device) {
+        if (device.info != null) return "${device.name} - ${device.info}";
+        return device.name;
+      });
+
+  print(blue(device.name + "\n"));
+  return device.name;
 }

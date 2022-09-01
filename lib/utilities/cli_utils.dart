@@ -10,29 +10,35 @@ void clear() {
   print("\x1B[2J\x1B[0;0H");
 }
 
-void printLogo(bool showSubtitle) {
-  print(blue(""" 
-                                                                                       
-88b           d88  88888888ba   88888888888   ad88888ba   88888888ba   88      a8P   88  888888888888  
-888b         d888  88       8b  88           d8       8b  88       8b  88    ,88     88       88       
-88 8b       d8 88  88      ,8P  88           Y8,          88      ,8P  88  ,88       88       88       
-88  8b     d8  88  88aaaaaa8P   88aaaaa       Y8aaaaa,    88aaaaaa8P   88,d88        88       88       
-88   8b   d8   88  88******     88*****         *****8b,  88******     8888888,      88       88       
-88    8b d8    88  88           88                    8b  88           88P   Y8b     88       88       
-88     888     88  88           88           Y8a     a8P  88           88      88,   88       88       
-88      8      88  88           88888888888    Y88888P    88           88       Y8b  88       88  
-
-${showSubtitle ? getSubtitle() : ""}
-"""));
+void printLogo({bool showSubtitle = true}) {
+  print("""                                                        ____________
+                                  _    _ _            /. /      / ./\\
+                                 | |  (_) |          /. / wifi / ./\\
+  _ __ ___  _ __   ___  ___ _ __ | | ___| |_        /. /______/ ./\\
+ | '_ ` _ \\| '_ \\ / _ \\/ __| '_ \\| |/ / | __|      /._     __  ./\\
+ | | | | | | |_) |  __/\__ \ |  _) |   <| | |_      /.// __ /_/ ./\\
+ |_| |_| |_| .__/ \\___||___/ .__/|_|\\_\\_|\\__|    /.    __    ./\\
+           | |             | |                  /.___/__/___./\\
+           |_|             |_|                  \\            \\
+""");
+  print("");
+  if (showSubtitle) print(blue(getSubtitle()));
+  print("");
 }
 
 String getSubtitle() {
-  return "MicroPython ESP Toolkit, v1.0.0";
+  return "MicroPython ESP Toolkit, " + getVersion();
+}
+
+String getVersion() {
+  return "v1.0.0";
 }
 
 Future<void> tryAgain(
-    {required Function callback, Function exit = _fallback}) async {
-  bool retry = confirm("Try again?");
+    {required Function callback,
+    Function exit = _fallback,
+    String message = "Try again?"}) async {
+  bool retry = confirm(message);
   if (retry) return callback();
   return exit();
 }

@@ -2,12 +2,15 @@ import 'package:dcli/dcli.dart';
 import 'dart:io';
 
 Future<dynamic> firmwareSelect({required String device}) async {
-  bool cont = confirm("Continue to flash new firmware on to your device?");
+  bool cont = confirm("Flash new firmware on to the device?");
   if (!cont) return;
 
   String URL = ask(
     "Enter MicroPython's firmware URL (https://micropython.org/download/) or an absolute path to the local .bin file:",
   );
+
+  if (URL.startsWith("\"") && URL.endsWith("\""))
+    URL = URL.substring(1, URL.length - 1);
 
   if (URL.startsWith("https://"))
     return _downloadFirmware(URL: URL, device: device);
@@ -21,7 +24,7 @@ Future<dynamic> _downloadFirmware(
       throw Exception(
           "Bad URL, MicroPython's firmware URL should end with .bin");
 
-    print(blue("Downloading firmware..."));
+    print(blue("Downloading firmware... \n"));
 
     HttpClientRequest request = await HttpClient().getUrl(Uri.parse(URL));
     HttpClientResponse response = await request.close();

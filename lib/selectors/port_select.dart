@@ -12,14 +12,14 @@ Future<String> portSelect() async {
       ],
       runInShell: true);
 
-  if (result.stderr != "") throw Exception("Could not find COM Serial Ports");
+  if (result.stderr != "") throw Exception("Could not find Serial Ports");
 
   List<String> coms = [];
   for (String com in result.stdout.split(separationString))
     coms.add(com.trim());
   coms.removeWhere((com) => ["", null, false, 0].contains(com));
 
-  if (coms.length == 0) throw Exception("Could not find COM Serial Ports");
+  if (coms.length == 0) throw Exception("Could not find Serial Ports");
 
   print("Select a Serial Port");
   String port = menu(prompt: "#", options: coms);

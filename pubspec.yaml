@@ -1,13 +1,13 @@
 name: mpespkit
-description: A sample command-line application.
+description: MicroPython ESP Toolkit
 version: 1.0.0
-# homepage: https://www.example.com
+homepage: https://www.example.com
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
 
-# dependencies:
-#   path: ^x.x.x
+dependencies:
+  path: ^1.8.2
 
 dev_dependencies:
   dcli: ^1.34.0

@@ -12,9 +12,9 @@ Future<void> transferFiles(
     required String port,
     required List<String> paths}) async {
   print(orange(
-      "Please note that if your device is running or will be running an infinite loop (e.g. while True) the file transfer process will never end."));
+      "Please note that if the device is running or will be running an infinite loop (e.g. while True) the file transfer process will never end."));
   print(orange(
-      "It's likely the process will timeout, when it does please check if the file transferred or not using the Serial Shell tool."));
+      "It's likely the process will timeout, when it does please check if the file transferred or not using the File List tool."));
 
   bool cont = confirm(orange("Do you understand?"));
   if (!cont) return;
@@ -55,7 +55,7 @@ Future<List<String>> _transferFileLoop(
 
     Process process = await Process.start(
         "ampy", ["-p", port, "-b", baud, "put", path],
-        runInShell: true);
+        runInShell: true, mode: ProcessStartMode.inheritStdio);
 
     Timer timer = killPidTimer(
         pid: process.pid,

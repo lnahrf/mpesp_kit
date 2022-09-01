@@ -12,7 +12,7 @@ Future<void> flashFirmware(
   String baud = baudSelect();
 
   sleep(1);
-  print(blue("Flashing new MicroPython firmware on to your device..."));
+  print(blue("Flashing new MicroPython firmware on to the device... \n"));
   sleep(2);
   print(green("Press and hold the BOOT button now!"));
   sleep(1);
@@ -20,8 +20,8 @@ Future<void> flashFirmware(
   sleep(1);
   print(green("Flashing in 1..."));
   sleep(1);
-  print(green(
-      "Flashing, please do not disconnect your device (this may take a while)"));
+  print(
+      green("Flashing, do not disconnect the device (this may take a while)"));
 
   ProcessResult result = await Process.run(
       "python",
@@ -45,10 +45,10 @@ Future<void> flashFirmware(
       result: result,
       onSuccess: (ProcessResult res) {
         print(green("Flashed new firmware successfuly! \n"));
-        sleep(1);
+        sleep(2);
       },
       onFailure: (ProcessResult res) {
-        print(orange("Failed to flash new firmware on to your device"));
+        print(orange("Failed to flash new firmware on to the device"));
         print(orange(res.stderr != "" ? res.stderr : res.stdout));
         sleep(1);
 

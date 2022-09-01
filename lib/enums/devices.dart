@@ -1,4 +1,12 @@
 abstract class Devices {
-  static final String ESP32 = "esp32";
-  static final String ESP8266 = "esp8266";
+  static final Device ESP32 = Device(name: "esp32");
+  static final Device ESP8266 =
+      Device(name: "esp8266", info: "(Partially supported)");
+}
+
+class Device {
+  String name;
+  String? info;
+
+  Device({required this.name, this.info});
 }
