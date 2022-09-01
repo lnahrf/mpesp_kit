@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/esptool/erase_flash.dart';
 import 'package:mpespkit/selectors/baud_select.dart';
-import 'package:mpespkit/utilities/parse_result.dart';
-import 'package:mpespkit/utilities/try_again.dart';
+import 'package:mpespkit/utilities/cli_utils.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> flashFirmware(
     {required String device,

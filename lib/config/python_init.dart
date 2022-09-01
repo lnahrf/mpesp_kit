@@ -1,4 +1,4 @@
-import 'package:mpespkit/utilities/run_command.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<dynamic> pythonInit() async {
   return runCommand(

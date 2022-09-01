@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/selectors/timeout_select.dart';
-import 'package:mpespkit/utilities/kill_pid_timer.dart';
-import 'package:mpespkit/utilities/parse_result.dart';
-import 'package:mpespkit/utilities/try_again.dart';
+import 'package:mpespkit/utilities/cli_utils.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> deleteFiles({required String device, required String port}) async {
   final files = await _getAllFiles(device: device, port: port);

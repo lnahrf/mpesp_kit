@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
-import 'package:mpespkit/utilities/parse_result.dart';
-import 'package:mpespkit/utilities/try_again.dart';
+import 'package:mpespkit/utilities/cli_utils.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> eraseFlash({required String device, required String port}) async {
   bool cont = confirm("Continue to reset your device's firmware?");

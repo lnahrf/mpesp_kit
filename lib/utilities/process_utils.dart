@@ -1,15 +1,32 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
-import 'package:mpespkit/utilities/parse_result.dart';
+import 'dart:async';
 
-Future runCommand(
+Timer killPidTimer(
+    {required int pid, required int duration, required String message}) {
+  Timer timer = Timer(Duration(seconds: duration), () async {
+    print(orange(message));
+    await Process.killPid(pid);
+  });
+  return timer;
+}
+
+dynamic parseResult(
+    {required ProcessResult result,
+    required Function onSuccess,
+    required Function onFailure}) {
+  if (result.exitCode != 0) return onFailure(result);
+  return onSuccess(result);
+}
+
+Future<bool> runCommand(
     {String command = "",
     List<String> args = const [],
     bool strict = false,
     bool shell = true,
     String successMsg = "",
     String failureMsg = ""}) async {
-  final result = await Process.run(command, args, runInShell: shell);
+  ProcessResult result = await Process.run(command, args, runInShell: shell);
   return parseResult(
       result: result,
       onSuccess: (ProcessResult res) {

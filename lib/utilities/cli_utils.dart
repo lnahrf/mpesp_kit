@@ -1,5 +1,7 @@
 import "package:dcli/dcli.dart";
 
+void _fallback() {}
+
 void divide() {
   print(" \n");
 }
@@ -26,4 +28,11 @@ ${showSubtitle ? getSubtitle() : ""}
 
 String getSubtitle() {
   return "MicroPython ESP Toolkit, v1.0.0";
+}
+
+Future<void> tryAgain(
+    {required Function callback, Function exit = _fallback}) async {
+  bool retry = confirm("Try again?");
+  if (retry) return callback();
+  return exit();
 }

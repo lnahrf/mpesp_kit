@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
-import 'package:mpespkit/utilities/try_again.dart';
+import 'package:mpespkit/utilities/cli_utils.dart';
 
 Future<void> softReset({required String device, required String port}) async {
   try {

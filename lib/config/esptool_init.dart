@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
-import 'package:mpespkit/utilities/run_command.dart';
-import 'package:mpespkit/utilities/parse_result.dart';
-import 'package:mpespkit/utilities/try_again.dart';
+import 'package:mpespkit/utilities/cli_utils.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> esptoolInit() async {
   final installed = await runCommand(

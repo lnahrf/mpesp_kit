@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:mpespkit/ampy/soft_reset.dart';
 import 'package:mpespkit/selectors/baud_select.dart';
 import 'package:mpespkit/selectors/timeout_select.dart';
-import 'package:mpespkit/utilities/kill_pid_timer.dart';
+import 'package:mpespkit/utilities/process_utils.dart';
 
 Future<void> transferFiles(
     {required String device,
