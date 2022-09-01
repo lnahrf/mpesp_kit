@@ -1,2 +1,1 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+MPESPKIT is a MicroPython management toolkit for ESP32/8622 type devices.
