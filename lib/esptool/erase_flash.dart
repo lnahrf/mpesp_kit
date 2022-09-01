@@ -18,7 +18,7 @@ Future<void> eraseFlash({required String device, required String port}) async {
   print(green(
       "Erasing flash, please do not disconnect your device (this may take a while)"));
 
-  final result = await Process.run(
+  ProcessResult result = await Process.run(
       "python", ["-m", "esptool", "--chip", device, "-p", port, "erase_flash"],
       runInShell: true);
 

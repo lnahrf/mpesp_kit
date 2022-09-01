@@ -5,16 +5,16 @@ Future<dynamic> firmwareSelect({required String device}) async {
   bool cont = confirm("Continue to flash new firmware on to your device?");
   if (!cont) return;
 
-  final URL = ask(
+  String URL = ask(
     "Enter MicroPython's firmware URL (https://micropython.org/download/) or an absolute path to the local .bin file:",
   );
 
   if (URL.startsWith("https://"))
-    return downloadFirmware(URL: URL, device: device);
-  return loadLocalFirmware(path: URL, device: device);
+    return _downloadFirmware(URL: URL, device: device);
+  return _loadLocalFirmware(path: URL, device: device);
 }
 
-Future<dynamic> downloadFirmware(
+Future<dynamic> _downloadFirmware(
     {required String URL, required String device}) async {
   try {
     if (!URL.endsWith(".bin"))
@@ -23,10 +23,12 @@ Future<dynamic> downloadFirmware(
 
     print(blue("Downloading firmware..."));
 
-    final request = await HttpClient().getUrl(Uri.parse(URL));
-    final response = await request.close();
+    HttpClientRequest request = await HttpClient().getUrl(Uri.parse(URL));
+    HttpClientResponse response = await request.close();
+
     File firmware = File(Directory.systemTemp.path +
-        "\\msespkit_firmware_${new DateTime.now().toIso8601String().replaceAll(":", "_").replaceAll(".", "_")}.bin");
+        "\\mpsespkit_firmware_${new DateTime.now().toIso8601String().replaceAll(":", "_").replaceAll(".", "_")}.bin");
+
     await response.pipe(firmware.openWrite());
     return firmware;
   } catch (exception) {
@@ -36,7 +38,7 @@ Future<dynamic> downloadFirmware(
   }
 }
 
-Future<dynamic> loadLocalFirmware(
+Future<dynamic> _loadLocalFirmware(
     {required String path, required String device}) async {
   try {
     File firmware = File(path);

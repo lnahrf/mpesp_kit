@@ -9,7 +9,8 @@ Future<void> flashFirmware(
     {required String device,
     required String port,
     required File firmware}) async {
-  final baud = baudSelect();
+  String baud = baudSelect();
+
   sleep(1);
   print(blue("Flashing new MicroPython firmware on to your device..."));
   sleep(2);
@@ -22,7 +23,7 @@ Future<void> flashFirmware(
   print(green(
       "Flashing, please do not disconnect your device (this may take a while)"));
 
-  final result = await Process.run(
+  ProcessResult result = await Process.run(
       "python",
       [
         "-m",

@@ -16,16 +16,16 @@ Future<void> transferFiles(
   print(orange(
       "It's likely the process will timeout, when it does please check if the file transferred or not using the Serial Shell tool."));
 
-  final cont = confirm(orange("Do you understand?"));
+  bool cont = confirm(orange("Do you understand?"));
   if (!cont) return;
 
-  final timeout = timeoutSelect();
-  final baud = baudSelect();
+  String timeout = timeoutSelect();
+  String baud = baudSelect();
 
-  final transfer = confirm("Transfer files?");
+  bool transfer = confirm("Transfer files?");
   if (!transfer) return;
 
-  final failedPaths = await _transferFileLoop(
+  List<String> failedPaths = await _transferFileLoop(
       paths: paths, port: port, baud: baud, timeout: timeout);
 
   sleep(1);
@@ -39,7 +39,7 @@ Future<void> transferFiles(
       return transferFiles(device: device, port: port, paths: failedPaths);
   }
 
-  final reset = confirm("Reset device?");
+  bool reset = confirm("Reset device?");
   if (reset) return softReset(device: device, port: port);
 }
 
@@ -53,7 +53,7 @@ Future<List<String>> _transferFileLoop(
   for (final path in paths) {
     print(blue("Transferring ${path} (this may take a while)"));
 
-    final process = await Process.start(
+    Process process = await Process.start(
         "ampy", ["-p", port, "-b", baud, "put", path],
         runInShell: true);
 
@@ -62,7 +62,7 @@ Future<List<String>> _transferFileLoop(
         duration: int.parse(timeout),
         message: "Timeout reached, killing file transfer process");
 
-    final exitCode = await process.exitCode;
+    int exitCode = await process.exitCode;
     timer.cancel();
 
     if (exitCode != 0) {

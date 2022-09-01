@@ -3,7 +3,8 @@ import 'package:mpespkit/enums/tools.dart';
 
 Future<String> toolSelect() async {
   print("Select a Tool");
-  final tool = menu(
+
+  Tool tool = menu(
       prompt: "#",
       options: [
         Tools.Flash,
@@ -12,7 +13,7 @@ Future<String> toolSelect() async {
         Tools.SoftReset,
         Tools.Serial
       ],
-      format: (tool) => "${(tool as Tool).name} - ${tool.description}");
+      format: (tool) => "${tool.name} - ${tool.description}");
 
   print(blue("\n" + tool.name + "\n"));
   sleep(1);

@@ -14,7 +14,7 @@ Future<void> esptoolInit() async {
       strict: true);
 
   if (!installed) {
-    final result = await Process.run(
+    ProcessResult result = await Process.run(
         "python", ["-m", "pip", "install", "esptool"],
         runInShell: true);
 

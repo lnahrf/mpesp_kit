@@ -4,7 +4,7 @@ import 'package:dcli/dcli.dart';
 Future<String> portSelect() async {
   String separationString = "_mpespkit_separation_";
 
-  final result = await Process.run(
+  ProcessResult result = await Process.run(
       "python",
       [
         "-c",
@@ -15,17 +15,15 @@ Future<String> portSelect() async {
   if (result.stderr != "") throw Exception("Could not find COM Serial Ports");
 
   List<String> coms = [];
-  for (String com in result.stdout.split(separationString)) {
+  for (String com in result.stdout.split(separationString))
     coms.add(com.trim());
-  }
-
   coms.removeWhere((com) => ["", null, false, 0].contains(com));
+
   if (coms.length == 0) throw Exception("Could not find COM Serial Ports");
 
   print("Select a Serial Port");
-  final port = menu(prompt: "#", options: coms);
-
-  final portAbbr = port.split(' - ')[0];
+  String port = menu(prompt: "#", options: coms);
+  String portAbbr = port.split(' - ')[0];
   print(blue(portAbbr + "\n"));
   sleep(1);
 

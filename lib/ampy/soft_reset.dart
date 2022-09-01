@@ -5,7 +5,7 @@ import 'package:mpespkit/utilities/try_again.dart';
 Future<void> softReset({required String device, required String port}) async {
   try {
     print(blue("Sending soft reset signal to device..."));
-    final process = await Process.start(
+    Process process = await Process.start(
         "ampy", ["-p", port, "run", "import machine; machine.soft_reset()"],
         runInShell: true);
     sleep(3);

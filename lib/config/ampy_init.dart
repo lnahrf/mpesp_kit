@@ -13,7 +13,7 @@ Future<dynamic> ampyInit() async {
           "Failed to validate adafruit-ampy installation, attempting to install adafruit-ampy...");
 
   if (!installed) {
-    final result = await Process.run(
+    ProcessResult result = await Process.run(
         "python", ["-m", "pip", "install", "adafruit-ampy"],
         runInShell: true);
 

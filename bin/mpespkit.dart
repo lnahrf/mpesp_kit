@@ -12,7 +12,7 @@ import 'package:mpespkit/utilities/tools_menu.dart';
 /**
  * TODO:
  * - Organize code and try to separate rendering and logic as much as possible
- * - remove all final types
+ * - add support to get latest firmware automatically by device
  * - finish Serial Shell Tool
  * - Improve UX on all tools
  * - Write a readme
