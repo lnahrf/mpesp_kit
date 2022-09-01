@@ -11,11 +11,10 @@ import 'package:mpespkit/utilities/tools_menu.dart';
 
 /**
  * TODO:
- * - Add try-catch block on soft reset
  * - Organize code and try to separate rendering and logic as much as possible
+ * - remove all final types
  * - finish Serial Shell Tool
  * - add baud selector on file transfer
- * - add general baud selector
  * - support "path" on file transfer
  * - Improve UX on all tools
  * - Write a readme
