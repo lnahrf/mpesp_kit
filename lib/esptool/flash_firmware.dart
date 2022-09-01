@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:mpespkit/esptool/erase_flash.dart';
+import 'package:mpespkit/selectors/baud_select.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
 import 'package:mpespkit/utilities/try_again.dart';
 
@@ -8,9 +9,7 @@ Future<void> flashFirmware(
     {required String device,
     required String port,
     required File firmware}) async {
-  final baud = ask("Enter transmission speed (baud):",
-      defaultValue: "115200", validator: Ask.integer);
-  print(blue("Transmission speed set to ${baud} \n"));
+  final baud = baudSelect();
   sleep(1);
   print(blue("Flashing new MicroPython firmware on to your device..."));
   sleep(2);
@@ -28,11 +27,11 @@ Future<void> flashFirmware(
       [
         "-m",
         "esptool",
-        "--chip",
+        "-c",
         device,
-        "--port",
+        "-p",
         port,
-        "--baud",
+        "-b",
         baud,
         "write_flash",
         "-z",

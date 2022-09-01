@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dcli/dcli.dart';
+import 'package:mpespkit/selectors/timeout_select.dart';
+import 'package:mpespkit/utilities/kill_pid_timer.dart';
 import 'package:mpespkit/utilities/parse_result.dart';
 import 'package:mpespkit/utilities/try_again.dart';
 
@@ -28,9 +30,7 @@ Future<void> deleteFiles({required String device, required String port}) async {
         callback: () => deleteFiles(device: device, port: port), exit: () {});
   }
 
-  final timeout = ask("Enter timeout in seconds:",
-      defaultValue: "30", validator: Ask.integer);
-  print(blue("Timeout is set to ${timeout} seconds \n"));
+  final timeout = timeoutSelect();
 
   sleep(1);
 
@@ -48,10 +48,11 @@ Future<void> deleteFile(
 
   final process =
       await Process.start("ampy", ["-p", port, "rm", path], runInShell: true);
-  Timer timer = Timer(Duration(seconds: int.parse(timeout)), () async {
-    print(orange("Timeout reached, killing file deletion process."));
-    await Process.killPid(process.pid);
-  });
+
+  Timer timer = killPidTimer(
+      pid: process.pid,
+      duration: int.parse(timeout),
+      message: "Timeout reached, killing file deletion process");
 
   final exitCode = await process.exitCode;
   timer.cancel();
