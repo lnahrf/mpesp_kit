@@ -6,6 +6,5 @@ Future<dynamic> pythonInit() async {
       args: ["-V"],
       successMsg: "Validated Python installation",
       failureMsg:
-          "Failed to validate Python installation, make sure Python is on your PATH environment variable.",
-      strict: true);
+          "Failed to validate Python installation, make sure Python is installed");
 }

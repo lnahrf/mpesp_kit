@@ -11,7 +11,6 @@ import 'package:mpespkit/utilities/tools_menu.dart';
 
 void main(List<String> arguments) async {
   printLogo();
-  print(blue("Author: ") + white("https://github.com/tk-ni"));
   print(blue("Repository: ") + white("https://github.com/tk-ni/mpespkit"));
   print(blue("Starting ${getSubtitle()}... \n"));
 
