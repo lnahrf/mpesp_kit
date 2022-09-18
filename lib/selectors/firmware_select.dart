@@ -1,6 +1,9 @@
 import 'package:dcli/dcli.dart';
 import 'dart:io';
 
+import 'package:mpespkit/enums/operating_systems.dart';
+import 'package:mpespkit/utilities/os_utils.dart';
+
 Future<dynamic> firmwareSelect({required String device}) async {
   bool cont = confirm("Flash new firmware on to the device?");
   if (!cont) return;
@@ -29,8 +32,14 @@ Future<dynamic> _downloadFirmware(
     HttpClientRequest request = await HttpClient().getUrl(Uri.parse(URL));
     HttpClientResponse response = await request.close();
 
+    String pathDivider =
+        compareOS(OperatingSystems.LINUX) || compareOS(OperatingSystems.MACOS)
+            ? '/'
+            : '\\';
+
     File firmware = File(Directory.systemTemp.path +
-        "\\mpsespkit_firmware_${new DateTime.now().toIso8601String().replaceAll(":", "_").replaceAll(".", "_")}.bin");
+        pathDivider +
+        "mpespkit_firmware_${new DateTime.now().toIso8601String().replaceAll(":", "_").replaceAll(".", "_")}.bin");
 
     await response.pipe(firmware.openWrite());
     return firmware;
